@@ -2,6 +2,9 @@ const puppeteer = require("puppeteer");
 const { artLogicUser, artLogicPwd } = require("../config.js");
 const fs = require("fs");
 
+/**
+ * Logs in to Artlogic Databse
+ */
 const login = async (page) => {
   console.log("Logging in to ArtLogic...");
 
@@ -18,6 +21,15 @@ const login = async (page) => {
   return page;
 };
 
+/**
+ * @desc Updates the price of a piece of artwork based on the update funtion passed.
+ * @param {function} updateFunc - the update function to be run against the current price
+ * @param id
+ */
+
+/**
+ * Initialize function that pulls up Artlogic Login Page
+ */
 const init = async () => {
   const browser = await puppeteer.launch();
   const newpage = await browser.newPage();
