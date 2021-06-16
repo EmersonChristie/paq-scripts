@@ -4,6 +4,7 @@
  * @returns {Object Array} a JSON array with all the artwork objects
  */
 const csvToJson = async (filePath) => {
+  console.log("File path", filePath);
   const csv = require("csvtojson");
   const converter = csv({
     ignoreEmpty: true,
@@ -98,7 +99,26 @@ const convertDimensions = (dimensions) => {
   };
 };
 
+/**
+ * @desc Converts csv file to json array of artwork objects
+ */
+const convertCsv = async (csvPath) => {
+  const csvArt = await csvToJson(csvPath);
+  const cleanData = await cleanCsv(csvArt);
+
+  const json = await cleanData.map((art) => {
+    return {
+      id: art.id,
+      title: art.title || null,
+      oldPrice: art.retailprice || null,
+      newprice: art.newprice || null,
+    };
+  });
+  return json;
+};
+
 module.exports = {
   csvToJson,
   saveToFile,
+  convertCsv,
 };
