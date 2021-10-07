@@ -22,6 +22,20 @@ const generateLarge = (artWork) => {
     imgMeta
   );
 
+  const highQualityJpeg = async (fileName, quality) => {
+    return await sharp(`${fileName}.tif`)
+  .jpeg({
+    quality: quality,
+    chromaSubsampling: '4:4:4'
+  })
+  .toFile(`${fileName}.jpg`)
+  .then(info => { 
+    console.log("info", info);
+    return fileName; 
+  })
+  .catch(err => { console.log(err) })
+  }
+
   const orientation = getOrienation(imgMeta.width, imgMeta.height);
 
   let canvasWidth, canvasHeight;
@@ -39,6 +53,8 @@ const generateLarge = (artWork) => {
 
   // generateCanvas("textTest.png", true, canvasWidth, canvasHeight, artWork);
   // generateCanvas("ttt12.png", false, canvasWidth, canvasHeight, artWork);
+
+  const jpeg = await highQualityJpeg()
 
   generateCanvas("xzzzzzz.png", false, canvasWidth, canvasHeight, artWork);
 };
