@@ -86,21 +86,21 @@ const generateArtShadows = (layers) => {
   const opts = {
     longShadow: {
       angle: 40,
-      length: 275, // length x width / 60
-      finalBlur: 105,
-      finalTransparency: 0.2,
+      length: 175, // length x width / 60
+      finalBlur: 75,
+      finalTransparency: 0.17,
     },
     shortShadow: {
       angle: 35,
-      length: 200,
-      finalBlur: 75,
-      finalTransparency: 0.17,
+      length: 125,
+      finalBlur: 50,
+      finalTransparency: 0.13,
     },
     upperShadow: {
       angle: -62,
-      length: -250,
+      length: -100,
       finalBlur: 75,
-      finalTransparency: 0.17,
+      finalTransparency: 0.13,
     },
   };
 
@@ -222,21 +222,25 @@ const generateCanvas = (
     </body>
   </html>`;
 
-  nodeHtmlToImage({
-    output: outFile,
-    html: htmlContainer,
-    content: {
-      imageSource: imageSource,
-      canvasWidth,
-      canvasHeight,
-      maxImgHeight,
-      maxImgWidth,
-      backgroundColor,
-      artist,
-      title,
-      dimensions,
-    },
-  });
+  try {
+    nodeHtmlToImage({
+      output: outFile,
+      html: htmlContainer,
+      content: {
+        imageSource: imageSource,
+        canvasWidth,
+        canvasHeight,
+        maxImgHeight,
+        maxImgWidth,
+        backgroundColor,
+        artist,
+        title,
+        dimensions,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 module.exports = {

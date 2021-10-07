@@ -38,7 +38,9 @@ const generateLarge = (artWork) => {
   canvasHeight = imgMeta.height * 1.25;
 
   // generateCanvas("textTest.png", true, canvasWidth, canvasHeight, artWork);
-  generateCanvas("ttt12.png", false, canvasWidth, canvasHeight, artWork);
+  // generateCanvas("ttt12.png", false, canvasWidth, canvasHeight, artWork);
+
+  generateCanvas("xzzzzzz.png", false, canvasWidth, canvasHeight, artWork);
 };
 
 const generateContent = (path, artWork) => {
@@ -54,7 +56,9 @@ const generateContent = (path, artWork) => {
 
   generateLarge(art);
 };
-const path = "./static/art_images/wide.jpg";
+// const path = "./static/art_images/wide.jpg";
+
+const path = "./static/art_images/findingflow.tif";
 
 const artwork = {
   artist: "Emerson Christie",
