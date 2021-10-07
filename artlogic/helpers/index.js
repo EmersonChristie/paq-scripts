@@ -86,7 +86,7 @@ const saveToFile = async (filename, json) => {
 };
 
 /**
- * @desc Cleans up the formatting of dimensions proeprty of the art object
+ * @desc Cleans up the formatting of dimensions property of the art object
  */
 const convertDimensions = (dimensions) => {
   const inches = dimensions.split("\r\n")[0];
