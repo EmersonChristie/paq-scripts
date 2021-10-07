@@ -1,6 +1,7 @@
 const nodeHtmlToImage = require("node-html-to-image");
 const fs = require("fs");
 const BezierEasing = require("bezier-easing");
+const { jpegVersion } = require("canvas");
 
 /**
  * Returns a string of box shadows sepereated based on user input
@@ -93,8 +94,8 @@ const generateArtShadows = (layers) => {
     shortShadow: {
       angle: 35,
       length: 125,
-      finalBlur: 50,
-      finalTransparency: 0.13,
+      finalBlur: 60,
+      finalTransparency: 0.05,
     },
     upperShadow: {
       angle: -62,
@@ -121,91 +122,38 @@ const generateArtShadows = (layers) => {
  * @param {Number} canvasWidth
  * @param {Number} canvasHeight
  */
-const generateCanvas = (
+const generateCanvas = async (
   outFile,
   withText,
   canvasWidth,
   canvasHeight,
-  artwork
+  imageSource
 ) => {
   const maxImgHeight = 0.75 * canvasHeight;
   const maxImgWidth = 0.75 * canvasWidth;
 
-  const { artist, title, dimensions, imageSource } = artwork;
-
-  const backgroundColor = "rgba(0, 0, 0, 0)";
-  const noTextHtml = `
-  <div id="container">
-    <img id="artwork" src="{{imageSource}}" />
-  </div>`;
-
-  const textHtml = `
-    <div id="container">
-    <div id="text-container">
-      <h3 id="artist">{{artist}}</h3>
-      <h2 id="title">{{title}}</h2>
-      <h3 id="dimensions">{{dimensions}}
-    </div>
-    <div id="art-container">
-
-    <img id="artwork" src="{{imageSource}}" />
-    </div>
-    </div> 
-`;
-
-  const textStyle = `
-    body {
-      font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
-    }  
-  #container {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: {{backgroundColor}};
-      }
-      h3 {
-        font-size: 100px;
-      }
-      h2 {
-        font-size: 125px;
-      }
-      #art-container {
-        width: 50%;
-      }
-      #text-container {
-        width: 50%;
-        text-align: right;
-        color: gray;
-        justify-content: center;
-      }
-      #artwork {
-          max-width: 75%;
-          max-height: 75%;
-
-          box-shadow: ${generateArtShadows(7)}
-      }`;
-
-  const noTextStyle = `
-    #container {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: {{backgroundColor}};
-      }
-      #artwork {
-          max-width: 75%;
-          max-height: 75%;
-
-          box-shadow: ${generateArtShadows(7)}
-      }`;
+  // const { artist, title, dimensions, imageSource } = artwork;
 
   const html = {
-    style: withText ? textStyle : noTextStyle,
-    body: withText ? textHtml : noTextHtml,
+    style: `
+      #container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        }
+        #artwork {
+            max-width: 75%;
+            max-height: 75%;
+
+            box-shadow: ${generateArtShadows(7)}
+    }`,
+    body: `
+      <div id="container">
+        <img id="artwork" src="{{imageSource}}" />
+      </div>
+    `,
   };
 
   const htmlContainer = `<html>
@@ -222,20 +170,34 @@ const generateCanvas = (
     </body>
   </html>`;
 
+  const puppeteer = {
+    args: [
+      "--no-sandbox",
+      "--disable-setuid-sandbox",
+      "--disable-dev-shm-usage",
+      "--disable-accelerated-2d-canvas",
+      "--no-first-run",
+      "--headless",
+      "--no-zygote",
+      "--disable-gpu",
+    ],
+    headless: true,
+    ignoreHTTPSErrors: true,
+  };
+
   try {
-    nodeHtmlToImage({
+    await nodeHtmlToImage({
       output: outFile,
       html: htmlContainer,
+      transparent: true,
+      puppeteerArgs: puppeteer,
+      waitUntil: "networkidle0",
       content: {
         imageSource: imageSource,
         canvasWidth,
         canvasHeight,
         maxImgHeight,
         maxImgWidth,
-        backgroundColor,
-        artist,
-        title,
-        dimensions,
       },
     });
   } catch (error) {
