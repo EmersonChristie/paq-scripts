@@ -83,25 +83,27 @@ const getBoxShadows = (numShadowLayers, options = {}) => {
  * @param {Number} layers - number of shadow layers
  * @returns {String} - The string version of the box shadow css
  */
-const generateArtShadows = (layers) => {
+const generateArtShadows = (layers, average) => {
   const opts = {
     longShadow: {
       angle: 40,
-      length: 175, // length x width / 60
-      finalBlur: 75,
-      finalTransparency: 0.17,
+      length: 0.03649 * average, // length x width / 60
+      // length: 175, // length x width / 60
+      // finalBlur: 75,
+      finalBlur: 0.015635 * average,
+      finalTransparency: 0.13,
     },
     shortShadow: {
       angle: 35,
-      length: 125,
-      finalBlur: 60,
+      length: 0.02604174 * average,
+      finalBlur: 0.010424 * average,
       finalTransparency: 0.05,
     },
     upperShadow: {
       angle: -62,
-      length: -100,
-      finalBlur: 75,
-      finalTransparency: 0.13,
+      length: -0.023958 * average,
+      finalBlur: 0.015625 * average,
+      finalTransparency: 0.11,
     },
   };
 
@@ -132,6 +134,9 @@ const generateCanvas = async (
   const maxImgHeight = 0.75 * canvasHeight;
   const maxImgWidth = 0.75 * canvasWidth;
 
+  // used to calculate length of shadows
+  const average = (maxImgWidth + maxImgHeight) / 2;
+
   // const { artist, title, dimensions, imageSource } = artwork;
 
   const html = {
@@ -147,7 +152,7 @@ const generateCanvas = async (
             max-width: 75%;
             max-height: 75%;
 
-            box-shadow: ${generateArtShadows(7)}
+            box-shadow: ${generateArtShadows(7, average)}
     }`,
     body: `
       <div id="container">
