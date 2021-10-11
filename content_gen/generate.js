@@ -122,6 +122,10 @@ const runner = async (artPath, fileName) => {
 
 const path = "/Users/patriciaqualls/Desktop/Emerson/Art Images/test";
 
+// Array to hold File Names
+let images = [];
+
+// Get File Names
 fs.readdirSync(path).forEach(async (file) => {
   const fileName = file.split(".tif")[0];
   // console.log("Generating Shadow for: ", fileName);
@@ -129,10 +133,24 @@ fs.readdirSync(path).forEach(async (file) => {
   const artPath = `${path}/`;
 
   if (fileName != ".DS_Store") {
-    return new Promise(function (resolve) {
-      // runner(artPath, fileName);
-
-      setTimeout(runner, 60000, artPath, fileName);
-    }).catch((err) => console.log(err));
+    images.push({ fileName, artPath });
   }
 });
+
+console.log("Images: ", images);
+
+for (let i = 0; i < images.length; i++) {
+  const image = images[i];
+
+  const { fileName, artPath } = image;
+
+  console.log("File name: ", fileName);
+
+  runner(artPath, fileName);
+
+  // return new Promise(function (resolve) {
+  //   runner(artPath, fileName);
+
+  //   // setTimeout(runner, 60000, artPath, fileName);
+  // }).catch((err) => console.log("Error in Promise!!! /n", err));
+}
