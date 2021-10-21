@@ -87,23 +87,23 @@ const generateArtShadows = (layers, average) => {
   const opts = {
     longShadow: {
       angle: 40,
-      length: 0.03749 * average, // length x width / 60
+      length: 0.03759 * average, // length x width / 60
       // length: 175, // length x width / 60
       // finalBlur: 75,
-      finalBlur: 0.015735 * average,
-      finalTransparency: 0.1,
+      finalBlur: 0.015835 * average,
+      finalTransparency: 0.09,
     },
     shortShadow: {
       angle: 35,
-      length: 0.02604174 * average,
-      finalBlur: 0.010424 * average,
-      finalTransparency: 0.0,
+      length: 0.02614174 * average,
+      finalBlur: 0.010524 * average,
+      finalTransparency: 0.03,
     },
     upperShadow: {
       angle: -62,
-      length: -0.024058 * average,
-      finalBlur: 0.015725 * average,
-      finalTransparency: 0.08,
+      length: -0.024158 * average,
+      finalBlur: 0.015825 * average,
+      finalTransparency: 0.07,
     },
   };
 
